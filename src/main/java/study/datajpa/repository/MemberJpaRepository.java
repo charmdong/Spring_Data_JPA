@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class MemberJPARepository {
+public class MemberJpaRepository {
 
     @PersistenceContext
     private EntityManager em;

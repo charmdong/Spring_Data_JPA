@@ -13,10 +13,10 @@ import java.util.List;
 @SpringBootTest
 @Transactional
 @Rollback(value = false)
-class MemberJPARepositoryTest {
+class MemberJpaRepositoryTest {
 
     @Autowired
-    private MemberJPARepository memberJPARepository;
+    private MemberJpaRepository memberJPARepository;
 
     @Test
     public void testMember() {
