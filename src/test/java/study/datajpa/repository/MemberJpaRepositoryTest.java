@@ -56,4 +56,17 @@ class MemberJpaRepositoryTest {
         long deleteCount = memberJPARepository.count();
         assertThat(deleteCount).isEqualTo(0);
     }
+
+    @Test
+    public void testPaging() {
+        for(int index = 0; index < 10; index++) {
+            Member member = new Member("member" + (index + 1), 10);
+            memberJPARepository.save(member);
+        }
+
+        List<Member> members = memberJPARepository.findByPage(10, 1, 10);
+        for (Member member : members) {
+            System.out.println("member = " + member);
+        }
+    }
 }
