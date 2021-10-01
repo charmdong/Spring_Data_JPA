@@ -64,6 +64,9 @@ class MemberJpaRepositoryTest {
             memberJPARepository.save(member);
         }
 
+        long count = memberJPARepository.getTotalCnt(10);
+        System.out.println("count = " + count);
+        
         List<Member> members = memberJPARepository.findByPage(10, 1, 10);
         for (Member member : members) {
             System.out.println("member = " + member);
