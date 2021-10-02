@@ -32,5 +32,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findMemberByUsername(String username);
     Optional<Member> findOptionalByUsername(String username);
 
-    Page<Member> findByAge(int age, Pageable pageable);
+    @Query(value = "select m from Member m left join m.team t where m.age = :age",
+            countQuery = "select count(m.username) from Member m")
+    Page<Member> findByAge(@Param("age") int age, Pageable pageable);
 }

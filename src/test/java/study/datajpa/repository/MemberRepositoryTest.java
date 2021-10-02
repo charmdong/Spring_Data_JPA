@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 
 import java.util.List;
@@ -89,6 +90,7 @@ class MemberRepositoryTest {
         //when
         PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
         Page<Member> page = memberRepository.findByAge(10, pageRequest);
+        Page<MemberDto> toMap = page.map(m -> new MemberDto());
 
         //then
         List<Member> content = page.getContent(); //조회된 데이터
