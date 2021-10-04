@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
+import study.datajpa.entity.Team;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,9 @@ class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private TeamRepository teamRepository;
 
     @Test
     public void testMember() {
@@ -100,5 +104,39 @@ class MemberRepositoryTest {
         assertThat(page.getTotalPages()).isEqualTo(2); //전체 페이지 번호
         assertThat(page.isFirst()).isTrue(); //첫번째 항목인가?
         assertThat(page.hasNext()).isTrue(); //다음 페이지가 있는가?
+    }
+
+    @Test
+    public void bulk() {
+        //given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+
+        //when
+        int updateCnt = memberRepository.bulkAgePlus(20);
+
+        //then
+        assertThat(updateCnt).isEqualTo(3);
+    }
+
+    @Test
+    public void entityGraph() {
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        memberRepository.save(new Member("member1", 10, teamA));
+        memberRepository.save(new Member("member1", 20, teamB));
+        memberRepository.save(new Member("member1", 30, teamB));
+        memberRepository.save(new Member("member1", 40, teamA));
+
+        List<Member> result = memberRepository.findByUsername("member1");
+        for (Member member : result) {
+            System.out.println("member = " + member);
+        }
     }
 }
